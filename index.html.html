@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaharukh Shafi Mithagari – Data Center & IT Infrastructure</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+/* ── THEME VARIABLES ── */
+[data-theme="dark"] {
+  --bg: #0a0f1e; --bg2: #131d2e; --card: rgba(19,29,46,0.85);
+  --text: #e2e8f0; --muted: #64748b; --border: rgba(99,130,190,0.15);
+  --nav-bg: rgba(10,15,30,0.88); --section-alt: rgba(19,29,46,0.4);
+  --input-bg: rgba(19,29,46,0.9); --shadow: rgba(0,0,0,0.4);
+}
+[data-theme="light"] {
+  --bg: #f0f4ff; --bg2: #e4eaf8; --card: rgba(255,255,255,0.92);
+  --text: #1e293b; --muted: #64748b; --border: rgba(37,99,235,0.15);
+  --nav-bg: rgba(240,244,255,0.92); --section-alt: rgba(228,234,248,0.6);
+  --input-bg: rgba(255,255,255,0.95); --shadow: rgba(37,99,235,0.08);
+}
+:root {
+  --blue: #2563eb; --cyan: #06b6d4; --glow: #3b82f6;
+  --green: #22c55e; --gold: #f59e0b;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;transition:background 0.3s,color 0.3s;}
+
+/* grid bg */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(37,99,235,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,0.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+[data-theme="light"] body::before{background-image:linear-gradient(rgba(37,99,235,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,0.06) 1px,transparent 1px);}
+
+/* blobs */
+.blob{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:drift 12s ease-in-out infinite alternate;}
+.blob1{width:500px;height:500px;top:-100px;left:-100px;background:rgba(37,99,235,0.12);}
+.blob2{width:400px;height:400px;bottom:-80px;right:-80px;background:rgba(6,182,212,0.09);animation-delay:-6s;}
+@keyframes drift{to{transform:translate(40px,30px) scale(1.1);}}
+
+/* cursor */
+.cursor{position:fixed;width:10px;height:10px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s;mix-blend-mode:screen;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(6,182,212,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.15s ease;}
+.cursor.expand{width:18px;height:18px;}
+.cursor-ring.expand{width:56px;height:56px;border-color:var(--cyan);}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:var(--nav-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:background 0.3s;}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--text);}
+.nav-logo span{color:var(--cyan);}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s;position:relative;}
+.nav-links a:hover,.nav-links a.active{color:var(--cyan);}
+.nav-links a.active::after{content:'';display:block;height:1px;background:var(--cyan);margin-top:2px;}
+.nav-resume-btn{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;padding:7px 14px;border-radius:5px;background:var(--blue);color:#fff;border:none;cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.nav-resume-btn:hover{background:var(--cyan);transform:translateY(-1px);}
+
+/* theme toggle */
+.theme-toggle{background:none;border:1px solid var(--border);border-radius:20px;padding:5px 10px;cursor:pointer;font-size:0.85rem;transition:all 0.2s;color:var(--text);}
+.theme-toggle:hover{border-color:var(--cyan);}
+
+/* hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s;}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+.mobile-menu{display:none;position:fixed;top:65px;left:0;right:0;background:var(--nav-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:20px 24px;z-index:99;}
+.mobile-menu.open{display:flex;flex-direction:column;gap:16px;}
+.mobile-menu a{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;padding:8px 0;border-bottom:1px solid var(--border);}
+.mobile-menu a:hover{color:var(--cyan);}
+
+/* Google badge */
+.google-badge{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:98;background:rgba(37,99,235,0.95);color:#fff;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;padding:6px 18px;border-radius:0 0 10px 10px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(37,99,235,0.3);animation:slideDown 0.5s 1.5s both;}
+@keyframes slideDown{from{transform:translateX(-50%) translateY(-100%);opacity:0;}to{transform:translateX(-50%) translateY(0);opacity:1;}}
+.google-badge .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* ── HERO ── */
+#hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:130px 48px 80px;max-width:1200px;margin:0 auto;}
+.hero-tag{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--cyan);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:12px;opacity:0;animation:fadeUp 0.6s 0.2s forwards;}
+.hero-tag::before{content:'';width:32px;height:1px;background:var(--cyan);}
+.hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3rem,7vw,5.5rem);line-height:1.0;color:var(--text);letter-spacing:-0.02em;opacity:0;animation:fadeUp 0.7s 0.35s forwards;}
+.hero-name .cyan{color:var(--cyan);}
+.hero-role{margin-top:18px;font-size:1.05rem;color:var(--muted);font-weight:300;min-height:1.6em;opacity:0;animation:fadeUp 0.7s 0.5s forwards;}
+.hero-role .typed{color:var(--text);font-weight:500;}
+.cursor-blink{display:inline-block;width:2px;height:1em;background:var(--cyan);margin-left:2px;vertical-align:middle;animation:blink 0.8s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px;opacity:0;animation:fadeUp 0.7s 0.65s forwards;}
+.badge{font-family:'DM Mono',monospace;font-size:0.68rem;padding:6px 14px;border-radius:4px;border:1px solid var(--border);color:var(--muted);letter-spacing:0.06em;background:rgba(37,99,235,0.05);transition:all 0.2s;cursor:default;}
+.badge:hover{border-color:var(--cyan);color:var(--cyan);}
+.hero-cta{display:flex;gap:16px;margin-top:44px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s 0.8s forwards;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;padding:13px 28px;border-radius:6px;font-family:'DM Mono',monospace;font-size:0.78rem;letter-spacing:0.06em;text-decoration:none;text-transform:uppercase;border:1px solid var(--blue);transition:all 0.2s;cursor:pointer;}
+.btn-primary:hover{background:var(--cyan);border-color:var(--cyan);transform:translateY(-2px);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;color:var(--text);padding:13px 28px;border-radius:6px;font-family:'DM Mono',monospace;font-size:0.78rem;letter-spacing:0.06em;text-decoration:none;text-transform:uppercase;border:1px solid var(--border);transition:all 0.2s;}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);}
+.hero-stats{display:flex;gap:48px;margin-top:60px;border-top:1px solid var(--border);padding-top:36px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s 1s forwards;}
+.stat-num{font-family:'Syne',sans-serif;font-weight:700;font-size:2.2rem;color:var(--text);}
+.stat-num span{color:var(--cyan);}
+.stat-label{font-size:0.78rem;color:var(--muted);margin-top:3px;}
+.hero-dream-strip{margin-top:40px;padding:16px 22px;background:var(--card);border:1px solid var(--border);border-radius:12px;backdrop-filter:blur(10px);display:flex;align-items:center;gap:20px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s 1.1s forwards;max-width:700px;}
+.dream-strip-label{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;}
+.dream-strip-logos{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.strip-logo{font-family:'Syne',sans-serif;font-weight:600;font-size:0.82rem;color:var(--muted);display:flex;align-items:center;gap:6px;transition:color 0.2s;white-space:nowrap;cursor:default;}
+.strip-logo:hover{color:var(--cyan);}
+.strip-divider{width:1px;height:14px;background:var(--border);}
+.scroll-hint{margin-top:32px;font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:10px;opacity:0;animation:fadeUp 0.6s 1.3s forwards;}
+.scroll-hint::after{content:'';width:40px;height:1px;background:var(--muted);animation:scrollLine 2s ease-in-out infinite;}
+@keyframes scrollLine{0%,100%{transform:scaleX(1);opacity:1;}50%{transform:scaleX(0.3);opacity:0.3;}}
+
+/* ── PROFILE PHOTO ── */
+#profile{position:relative;z-index:1;}
+.profile-wrap{max-width:1200px;margin:0 auto;padding:80px 48px;display:flex;gap:64px;align-items:center;}
+.profile-photo-box{flex-shrink:0;position:relative;}
+.profile-avatar{width:200px;height:200px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;color:#fff;border:3px solid rgba(6,182,212,0.3);position:relative;overflow:hidden;}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.profile-avatar-ring{position:absolute;inset:-6px;border-radius:50%;border:2px dashed rgba(6,182,212,0.3);animation:spin 20s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.profile-status{position:absolute;bottom:8px;right:8px;background:var(--bg2);border:2px solid var(--bg);border-radius:20px;padding:4px 10px;font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--green);display:flex;align-items:center;gap:5px;}
+.profile-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;}
+.profile-info{flex:1;}
+.profile-about{font-size:1rem;color:var(--muted);line-height:1.8;margin-bottom:20px;}
+.profile-about strong{color:var(--text);}
+.profile-quick{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+.pq-item{font-family:'DM Mono',monospace;font-size:0.68rem;padding:5px 12px;border-radius:4px;border:1px solid var(--border);color:var(--muted);background:rgba(37,99,235,0.04);}
+
+/* ── SECTIONS COMMON ── */
+section{position:relative;z-index:1;scroll-margin-top:72px;}
+.section-wrap{max-width:1200px;margin:0 auto;padding:90px 48px;}
+.section-tag{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--cyan);letter-spacing:0.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.section-tag::before{content:'';width:24px;height:1px;background:var(--cyan);}
+.section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(1.8rem,3.5vw,2.5rem);color:var(--text);letter-spacing:-0.02em;margin-bottom:48px;}
+
+/* ── ACHIEVEMENTS ── */
+#achievements{background:var(--section-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.achieve-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+.achieve-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:26px 24px;position:relative;overflow:hidden;transition:all 0.25s;backdrop-filter:blur(8px);}
+.achieve-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan));transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
+.achieve-card:hover{transform:translateY(-5px);border-color:rgba(6,182,212,0.3);}
+.achieve-card:hover::before{transform:scaleX(1);}
+.achieve-icon{font-size:1.8rem;margin-bottom:12px;}
+.achieve-num{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;color:var(--cyan);margin-bottom:4px;}
+.achieve-label{font-family:'Syne',sans-serif;font-weight:600;font-size:0.9rem;color:var(--text);margin-bottom:6px;}
+.achieve-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;}
+
+/* ── SKILLS WITH BARS ── */
+.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.skills-grid{display:flex;flex-direction:column;gap:18px;}
+.skill-bar-item{}
+.skill-bar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
+.skill-bar-name{font-family:'Syne',sans-serif;font-weight:600;font-size:0.88rem;color:var(--text);}
+.skill-bar-pct{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--cyan);}
+.skill-bar-track{height:6px;background:rgba(37,99,235,0.12);border-radius:3px;overflow:hidden;}
+.skill-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:3px;width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+.skill-cards-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.skill-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 18px;transition:all 0.25s;position:relative;overflow:hidden;}
+.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
+.skill-card:hover{border-color:rgba(6,182,212,0.3);transform:translateY(-3px);}
+.skill-card:hover::before{transform:scaleX(1);}
+.skill-icon{font-size:1.3rem;margin-bottom:10px;}
+.skill-cat{font-family:'Syne',sans-serif;font-weight:600;font-size:0.82rem;color:var(--text);margin-bottom:8px;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.skill-tag{font-family:'DM Mono',monospace;font-size:0.6rem;padding:2px 7px;border-radius:3px;background:rgba(37,99,235,0.1);color:var(--muted);border:1px solid rgba(37,99,235,0.18);}
+
+/* ── EXPERIENCE ── */
+.timeline{position:relative;padding-left:32px;}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--cyan),transparent);}
+.tl-item{position:relative;margin-bottom:48px;}
+.tl-dot{position:absolute;left:-37px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--cyan);transition:background 0.2s;}
+.tl-item:hover .tl-dot{background:var(--cyan);}
+.tl-meta{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--cyan);letter-spacing:0.08em;margin-bottom:5px;}
+.tl-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text);margin-bottom:2px;}
+.tl-company{font-size:0.85rem;color:var(--muted);margin-bottom:12px;}
+.tl-bullets{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.tl-bullets li{font-size:0.855rem;color:var(--muted);line-height:1.6;padding-left:16px;position:relative;}
+.tl-bullets li::before{content:'▸';position:absolute;left:0;color:var(--cyan);font-size:0.7rem;top:3px;}
+
+/* ── CERTIFICATIONS ── */
+#certifications{background:var(--section-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.cert-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;transition:all 0.22s;}
+.cert-card:hover{border-color:rgba(6,182,212,0.35);transform:translateX(4px);}
+.cert-icon{width:36px;height:36px;min-width:36px;background:rgba(37,99,235,0.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;}
+.cert-name{font-family:'Syne',sans-serif;font-weight:600;font-size:0.83rem;color:var(--text);margin-bottom:3px;}
+.cert-issuer{font-size:0.73rem;color:var(--muted);}
+.cert-date{font-family:'DM Mono',monospace;font-size:0.63rem;color:var(--cyan);margin-top:3px;}
+
+/* ── PROJECTS ── */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;}
+.proj-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px 26px;position:relative;overflow:hidden;transition:all 0.25s;}
+.proj-card::after{content:'';position:absolute;bottom:-60px;right:-60px;width:140px;height:140px;border-radius:50%;background:rgba(37,99,235,0.06);transition:all 0.4s;}
+.proj-card:hover{border-color:rgba(6,182,212,0.3);transform:translateY(-5px);}
+.proj-card:hover::after{transform:scale(1.6);background:rgba(6,182,212,0.08);}
+.proj-num{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);margin-bottom:12px;letter-spacing:0.1em;}
+.proj-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:8px;}
+.proj-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:16px;}
+.proj-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.proj-stack{display:flex;flex-wrap:wrap;gap:5px;}
+.proj-tech{font-family:'DM Mono',monospace;font-size:0.6rem;padding:2px 7px;border-radius:3px;background:rgba(6,182,212,0.08);color:var(--cyan);border:1px solid rgba(6,182,212,0.18);}
+.proj-link{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--blue);text-decoration:none;border:1px solid rgba(37,99,235,0.3);padding:4px 10px;border-radius:4px;transition:all 0.2s;white-space:nowrap;}
+.proj-link:hover{background:var(--blue);color:#fff;}
+
+/* ── RELOCATION MAP ── */
+#relocation{background:var(--section-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.map-wrap{display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:start;}
+.map-svg-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;overflow:hidden;}
+.map-svg-wrap svg{width:100%;height:auto;display:block;}
+.reloc-regions{display:flex;flex-direction:column;gap:14px;}
+.region-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;transition:all 0.2s;}
+.region-card:hover{border-color:rgba(6,182,212,0.35);transform:translateX(-4px);}
+.region-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.region-flag{font-size:1.2rem;}
+.region-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);}
+.region-roles{font-size:0.75rem;color:var(--muted);line-height:1.5;}
+.region-badge{font-family:'DM Mono',monospace;font-size:0.58rem;padding:2px 8px;border-radius:10px;background:rgba(34,197,94,0.1);color:#86efac;border:1px solid rgba(34,197,94,0.2);margin-left:auto;}
+
+/* ── DREAM COMPANIES ── */
+.dream-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px;}
+.dream-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:26px 20px;text-align:center;position:relative;overflow:hidden;transition:all 0.28s;cursor:default;}
+.dream-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(37,99,235,0.12),transparent 70%);opacity:0;transition:opacity 0.3s;}
+.dream-card:hover{transform:translateY(-7px);border-color:rgba(6,182,212,0.4);box-shadow:0 20px 40px var(--shadow);}
+.dream-card:hover::before{opacity:1;}
+.dream-logo{font-size:2rem;margin-bottom:12px;}
+.dream-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:5px;}
+.dream-role{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--cyan);letter-spacing:0.05em;}
+.star-badge{position:absolute;top:10px;right:10px;background:rgba(250,204,21,0.15);color:#fbbf24;font-size:0.58rem;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:20px;border:1px solid rgba(251,191,36,0.25);letter-spacing:0.05em;}
+
+/* ── TESTIMONIALS ── */
+#testimonials{border-top:1px solid var(--border);}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;position:relative;transition:all 0.25s;}
+.testi-card:hover{border-color:rgba(6,182,212,0.3);transform:translateY(-4px);}
+.testi-quote{font-size:2.5rem;color:var(--cyan);line-height:1;margin-bottom:12px;font-family:'Syne',sans-serif;opacity:0.5;}
+.testi-text{font-size:0.88rem;color:var(--muted);line-height:1.7;margin-bottom:20px;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:12px;}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:#fff;}
+.testi-name{font-family:'Syne',sans-serif;font-weight:600;font-size:0.85rem;color:var(--text);}
+.testi-role{font-size:0.73rem;color:var(--muted);}
+
+/* ── CONTACT ── */
+#contact{background:var(--section-alt);border-top:1px solid var(--border);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
+.contact-intro{font-size:0.9rem;color:var(--muted);line-height:1.7;margin-bottom:28px;}
+.contact-links{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
+.contact-link{display:flex;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted);text-decoration:none;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--card);transition:all 0.2s;}
+.contact-link:hover{border-color:var(--cyan);color:var(--cyan);transform:translateX(5px);}
+.availability{background:rgba(6,182,212,0.05);border:1px solid rgba(6,182,212,0.18);border-radius:10px;padding:24px;margin-top:4px;}
+.avail-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+.avail-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px #22c55e;animation:pulse 2s infinite;}
+.avail-text{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+.avail-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;}
+.avail-tag{font-family:'DM Mono',monospace;font-size:0.62rem;padding:3px 9px;border-radius:4px;background:rgba(34,197,94,0.08);color:#86efac;border:1px solid rgba(34,197,94,0.18);}
+
+/* Contact form */
+.contact-form{display:flex;flex-direction:column;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-label{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--cyan);letter-spacing:0.08em;text-transform:uppercase;}
+.form-input,.form-textarea{background:var(--input-bg);border:1px solid var(--border);border-radius:7px;padding:12px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.88rem;transition:border 0.2s;outline:none;width:100%;}
+.form-input:focus,.form-textarea:focus{border-color:var(--cyan);}
+.form-textarea{resize:vertical;min-height:110px;}
+.form-submit{background:var(--blue);color:#fff;border:none;border-radius:7px;padding:13px 24px;font-family:'DM Mono',monospace;font-size:0.78rem;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;width:100%;}
+.form-submit:hover{background:var(--cyan);transform:translateY(-2px);}
+.form-success{display:none;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:7px;padding:14px;text-align:center;font-family:'DM Mono',monospace;font-size:0.75rem;color:#86efac;}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24px 48px;display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;}
+.footer-name{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);}
+.footer-copy{font-family:'DM Mono',monospace;font-size:0.63rem;color:var(--muted);}
+
+/* ── BACK TO TOP ── */
+.back-top{position:fixed;bottom:32px;right:32px;z-index:200;width:42px;height:42px;background:var(--blue);color:#fff;border:none;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,99,235,0.4);opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;}
+.back-top.visible{opacity:1;transform:translateY(0);pointer-events:auto;}
+.back-top:hover{background:var(--cyan);transform:translateY(-3px);}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .skills-layout{grid-template-columns:1fr;}
+  .map-wrap{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;gap:32px;}
+  .profile-wrap{flex-direction:column;gap:32px;}
+}
+@media(max-width:768px){
+  nav{padding:14px 20px;}
+  .nav-links,.nav-resume-btn{display:none;}
+  .hamburger{display:flex;}
+  #hero,.section-wrap,.profile-wrap{padding-left:20px;padding-right:20px;}
+  .hero-stats{gap:24px;}
+  footer{flex-direction:column;gap:8px;text-align:center;padding:20px;}
+  .back-top{bottom:20px;right:20px;}
+  .skill-cards-col{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<!-- Google Applying Badge -->
+<div class="google-badge">
+  <span class="dot"></span>
+  Currently Applying · Google Data Center Technician
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">S<span>.</span>Mithagari</div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#novels">Novels</a></li>
+      <li><a href="#dream-companies">Goals</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+    <a href="Shaharukh_Mithagari_Google_DCT.pdf" download class="nav-resume-btn">↓ Resume</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#skills">Skills</a>
+  <a href="#experience">Experience</a>
+  <a href="#certifications">Certs</a>
+  <a href="#projects">Projects</a>
+  <a href="#novels">Novels</a>
+  <a href="#dream-companies">Goals</a>
+  <a href="#contact">Contact</a>
+  <a href="Shaharukh_Mithagari_Google_DCT.pdf" download>↓ Download Resume</a>
+</div>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-tag">Data Center & IT Infrastructure</div>
+  <h1 class="hero-name">Shaharukh<br>Shafi<br><span class="cyan">Mithagari</span></h1>
+  <p class="hero-role">
+    <span class="typed" id="typedText"></span><span class="cursor-blink"></span>
+  </p>
+  <div class="hero-badges">
+    <span class="badge">Linux / Windows Server</span>
+    <span class="badge">TCP/IP · DNS · DHCP · VPN</span>
+    <span class="badge">Component-Level Repair</span>
+    <span class="badge">VMware · Hyper-V</span>
+    <span class="badge">ITIL V4</span>
+    <span class="badge">ISC2 Candidate</span>
+    <span class="badge">Shift-Ready · Night / Weekend</span>
+  </div>
+  <div class="hero-cta">
+    <a href="mailto:mithagaris@gmail.com" class="btn-primary">↗ Get In Touch</a>
+    <a href="Shaharukh_Mithagari_Google_DCT.pdf" download class="btn-outline">↓ Download Resume</a>
+    <a href="#experience" class="btn-outline">View Experience</a>
+  </div>
+  <div class="hero-stats">
+    <div><div class="stat-num" data-target="9" data-suffix="+">0</div><div class="stat-label">Years of Experience</div></div>
+    <div><div class="stat-num" data-target="3000" data-suffix="+">0</div><div class="stat-label">Users Supported</div></div>
+    <div><div class="stat-num" data-target="7" data-suffix="">0</div><div class="stat-label">Certifications</div></div>
+    <div><div class="stat-num" data-target="5" data-suffix="">0</div><div class="stat-label">Projects Shipped</div></div>
+  </div>
+  <div class="hero-dream-strip">
+    <div class="dream-strip-label">🎯 Dream Companies</div>
+    <div class="dream-strip-logos">
+      <div class="strip-logo"><span>🟦</span> Google</div>
+      <div class="strip-divider"></div>
+      <div class="strip-logo"><span>🟩</span> Amazon</div>
+      <div class="strip-divider"></div>
+      <div class="strip-logo"><span>🟦</span> Meta</div>
+      <div class="strip-divider"></div>
+      <div class="strip-logo"><span>🪟</span> Microsoft</div>
+      <div class="strip-divider"></div>
+      <div class="strip-logo"><span>🍎</span> Apple</div>
+      <div class="strip-divider"></div>
+      <div class="strip-logo"><span>☁️</span> Cloudflare</div>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll to explore</div>
+</div>
+
+<!-- PROFILE -->
+<section id="profile">
+  <div class="profile-wrap reveal">
+    <div class="profile-photo-box">
+      <div class="profile-avatar-ring"></div>
+      <div class="profile-avatar"><img src="D:\Saharukh Reusme\images.jpg" alt="Shaharukh Mithagari"></div>
+      <div class="profile-status">Open to Work</div>
+    </div>
+    <div class="profile-info">
+      <div class="section-tag">About Me</div>
+      <h2 class="section-title" style="margin-bottom:20px;">IT Professional<br>with <span style="color:var(--cyan)">Purpose</span></h2>
+      <p class="profile-about">
+        I'm <strong>Shaharukh Shafi Mithagari</strong>, a dedicated IT Infrastructure &amp; Support Professional with <strong>9+ years</strong> of hands-on experience keeping systems running, hardware healthy, and networks stable. From component-level server repairs to data center operations, I thrive in high-uptime environments and shift-based schedules.
+      </p>
+      <p class="profile-about" style="margin-top:10px;">
+        I'm currently targeting <strong>Data Center Technician</strong> roles at global tech companies like Google, Amazon, and Microsoft — where infrastructure work truly matters at scale.
+      </p>
+      <div class="profile-quick">
+        <span class="pq-item">📧 mithagaris@gmail.com</span>
+        <span class="pq-item">🌍 Open to Relocation</span>
+        <span class="pq-item">🌙 Night Shifts OK</span>
+        <span class="pq-item">💪 50lb Lift Capable</span>
+        <span class="pq-item">🔗 LinkedIn</span>
+        <span class="pq-item">🐙 GitHub</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-wrap">
+    <div class="section-tag">Impact</div>
+    <h2 class="section-title">Achievements & Highlights</h2>
+    <div class="achieve-grid reveal">
+      <div class="achieve-card">
+        <div class="achieve-icon">⚡</div>
+        <div class="achieve-num">99.9<span style="font-size:1.2rem">%</span></div>
+        <div class="achieve-label">Uptime Maintained</div>
+        <div class="achieve-desc">Consistently maintained near-perfect system uptime across all supported infrastructure environments throughout 9+ years.</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">🎫</div>
+        <div class="achieve-num">40<span style="font-size:1.2rem">%</span></div>
+        <div class="achieve-label">Faster Ticket Resolution</div>
+        <div class="achieve-desc">Streamlined incident management workflows and first-call resolution practices to significantly reduce average ticket close time.</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">👥</div>
+        <div class="achieve-num">3000<span style="font-size:1.2rem">+</span></div>
+        <div class="achieve-label">Users Supported</div>
+        <div class="achieve-desc">Provided hardware, software, and network support to thousands of end-users across multiple organizations and project sites.</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">🔧</div>
+        <div class="achieve-num">6<span style="font-size:1.2rem">yr</span></div>
+        <div class="achieve-label">Longest Tenure</div>
+        <div class="achieve-desc">Served 6 continuous years at Precision Techserver, demonstrating reliability, deep technical growth, and consistent performance.</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">🖥️</div>
+        <div class="achieve-num">500<span style="font-size:1.2rem">+</span></div>
+        <div class="achieve-label">Hardware Units Serviced</div>
+        <div class="achieve-desc">Component-level repairs and maintenance performed on servers, workstations, and peripherals across multiple enterprise environments.</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">🌐</div>
+        <div class="achieve-num">PR<span style="font-size:1.2rem"> #1123</span></div>
+        <div class="achieve-label">Open Source Contributor</div>
+        <div class="achieve-desc">Successfully contributed and merged code to Microsoft's Chat Copilot open-source project on GitHub.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-tag">Technical Expertise</div>
+    <h2 class="section-title">Skills & Proficiency</h2>
+    <div class="skills-layout reveal">
+      <div>
+        <div class="skills-grid" id="skillBars">
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span class="skill-bar-name">Server Hardware & Repair</span><span class="skill-bar-pct">95%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="95"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span class="skill-bar-name">Linux / Windows Server</span><span class="skill-bar-pct">88%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span class="skill-bar-name">Networking (TCP/IP, DNS, VPN)</span><span class="skill-bar-pct">85%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span class="skill-bar-name">VMware / Hyper-V</span><span class="skill-bar-pct">78%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="78"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span class="skill-bar-name">Data Center Operations</span><span class="skill-bar-pct">82%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span class="skill-bar-name">ITIL V4 / Incident Mgmt</span><span class="skill-bar-pct">80%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span class="skill-bar-name">JavaScript / C# / HTML</span><span class="skill-bar-pct">70%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="70"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="skill-cards-col">
+        <div class="skill-card"><div class="skill-icon">🖥️</div><div class="skill-cat">OS</div><div class="skill-tags"><span class="skill-tag">Linux</span><span class="skill-tag">Windows Server</span><span class="skill-tag">macOS</span></div></div>
+        <div class="skill-card"><div class="skill-icon">🌐</div><div class="skill-cat">Networking</div><div class="skill-tags"><span class="skill-tag">TCP/IP</span><span class="skill-tag">DNS</span><span class="skill-tag">DHCP</span><span class="skill-tag">VPN</span></div></div>
+        <div class="skill-card"><div class="skill-icon">🔧</div><div class="skill-cat">Hardware</div><div class="skill-tags"><span class="skill-tag">Assembly</span><span class="skill-tag">Repair</span><span class="skill-tag">Maintenance</span></div></div>
+        <div class="skill-card"><div class="skill-icon">☁️</div><div class="skill-cat">Cloud</div><div class="skill-tags"><span class="skill-tag">VMware</span><span class="skill-tag">Hyper-V</span><span class="skill-tag">Serverless</span></div></div>
+        <div class="skill-card"><div class="skill-icon">💻</div><div class="skill-cat">Code</div><div class="skill-tags"><span class="skill-tag">HTML</span><span class="skill-tag">CSS</span><span class="skill-tag">JS</span><span class="skill-tag">C#</span></div></div>
+        <div class="skill-card"><div class="skill-icon">⚙️</div><div class="skill-cat">Tools</div><div class="skill-tags"><span class="skill-tag">ITIL V4</span><span class="skill-tag">GitHub</span><span class="skill-tag">ITSM</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="background:var(--section-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section-wrap">
+    <div class="section-tag">Career Timeline</div>
+    <h2 class="section-title">Professional Experience</h2>
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-meta">Apr 2025 – Present · Thane, Mumbai</div>
+        <div class="tl-title">System Executive</div>
+        <div class="tl-company">RDC Concrete Ltd</div>
+        <ul class="tl-bullets">
+          <li>Set up and maintained IT infrastructure for project sites — LAN, CCTV, and server hardware installation.</li>
+          <li>Performed component-level hardware troubleshooting and repair; coordinated vendor escalations.</li>
+          <li>Diagnosed and resolved OS-level issues across Windows Server environments.</li>
+          <li>Maintained IT asset inventory, documentation, and operational runbooks.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-meta">Sep 2024 – Apr 2025 · Mumbai</div>
+        <div class="tl-title">System Administrator L1</div>
+        <div class="tl-company">Geekay Infotech</div>
+        <ul class="tl-bullets">
+          <li>Administered Linux and Windows/macOS systems; OS troubleshooting, patch management, and configuration.</li>
+          <li>Configured and supported VPN connections and networking protocols for remote users.</li>
+          <li>Managed backup systems and performed restoration testing; remote hardware support.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-meta">Nov 2023 – Apr 2024 · Mumbai</div>
+        <div class="tl-title">Desktop Support Engineer</div>
+        <div class="tl-company">Niorn Systems & Services Pvt Ltd</div>
+        <ul class="tl-bullets">
+          <li>Hardware and software support for 45+ users including component replacement and OS reinstallation.</li>
+          <li>Diagnosed and resolved LAN/WAN, printer, and peripheral issues under SLA-driven timelines.</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-meta">Oct 2017 – Jul 2023 · Mumbai</div>
+        <div class="tl-title">System Engineer L1</div>
+        <div class="tl-company">Precision Techserver Pvt Ltd</div>
+        <ul class="tl-bullets">
+          <li>Component-level repairs and troubleshooting on servers and desktop hardware across large-scale infrastructure.</li>
+          <li>Diagnosed OS failures on Linux and Windows Server; applied fixes, patches, and configuration changes.</li>
+          <li>Supported TCP/IP, DNS, DHCP, and VPN networking; resolved connectivity incidents.</li>
+          <li>Operated on shift-based schedules including nights and weekends for 24/7 uptime.</li>
+          <li>Logged and resolved incidents using ITSM ticketing tools following ITIL practices.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-wrap">
+    <div class="section-tag">Credentials</div>
+    <h2 class="section-title">Certifications</h2>
+    <div class="certs-grid reveal">
+      <div class="cert-card"><div class="cert-icon">☁️</div><div><div class="cert-name">Serverless Cloud Computing</div><div class="cert-issuer">NASSCOM</div><div class="cert-date">Apr 2026</div></div></div>
+      <div class="cert-card"><div class="cert-icon">🔐</div><div><div class="cert-name">ISC2 Candidate – CC</div><div class="cert-issuer">ISC2 · Security Principles, Access Control</div><div class="cert-date">Sep 2025 – Sep 2026</div></div></div>
+      <div class="cert-card"><div class="cert-icon">⚡</div><div><div class="cert-name">Six Sigma White Belt</div><div class="cert-issuer">CSSC</div><div class="cert-date">Feb 2025</div></div></div>
+      <div class="cert-card"><div class="cert-icon">📋</div><div><div class="cert-name">Introduction to ITIL® V4</div><div class="cert-issuer">Simplilearn</div><div class="cert-date">Sep 2025</div></div></div>
+      <div class="cert-card"><div class="cert-icon">🖥️</div><div><div class="cert-name">MSCIT</div><div class="cert-issuer">Maharashtra State Board of Technical Education</div><div class="cert-date">Jan 2012</div></div></div>
+      <div class="cert-card"><div class="cert-icon">💎</div><div><div class="cert-name">C# Certification</div><div class="cert-issuer">HackerRank</div><div class="cert-date">Jul 2022</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="background:var(--section-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section-wrap">
+    <div class="section-tag">Portfolio</div>
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid reveal">
+      <div class="proj-card">
+        <div class="proj-num">01 / Project</div>
+        <div class="proj-title">Kiddotubes.com</div>
+        <div class="proj-desc">Kid-friendly video platform (Beta). Safe video-viewing experience for children with curated content controls.</div>
+        <div class="proj-footer">
+          <div class="proj-stack"><span class="proj-tech">Web App</span><span class="proj-tech">Infrastructure</span><span class="proj-tech">Live</span></div>
+          <a href="https://kiddotubes.com" target="_blank" rel="noopener" class="proj-link">↗ Live</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-num">02 / Project</div>
+        <div class="proj-title">NeuraFix</div>
+        <div class="proj-desc">AI-powered code companion tool. Assists developers in identifying and fixing bugs intelligently using AI suggestions.</div>
+        <div class="proj-footer">
+          <div class="proj-stack"><span class="proj-tech">AI</span><span class="proj-tech">JavaScript</span><span class="proj-tech">GitHub</span></div>
+          <a href="https://github.com" target="_blank" rel="noopener" class="proj-link">↗ GitHub</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-num">03 / Project</div>
+        <div class="proj-title">COVID-19 Tracker</div>
+        <div class="proj-desc">Live dashboard tracking COVID-19 statistics using public APIs. Real-time data visualization with country-level filtering.</div>
+        <div class="proj-footer">
+          <div class="proj-stack"><span class="proj-tech">HTML</span><span class="proj-tech">CSS</span><span class="proj-tech">JS</span><span class="proj-tech">API</span></div>
+          <a href="#" target="_blank" rel="noopener" class="proj-link">↗ Live Demo</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-num">04 / Project</div>
+        <div class="proj-title">File Sharing Website</div>
+        <div class="proj-desc">Browser-based file sharing application built with vanilla web technologies. Simple, fast, and dependency-free.</div>
+        <div class="proj-footer">
+          <div class="proj-stack"><span class="proj-tech">HTML</span><span class="proj-tech">CSS</span><span class="proj-tech">JavaScript</span></div>
+          <a href="#" target="_blank" rel="noopener" class="proj-link">↗ View</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-num">05 / Open Source</div>
+        <div class="proj-title">Microsoft Chat Copilot</div>
+        <div class="proj-desc">Open-source contributor to Microsoft's Chat Copilot project. PR #1123 successfully merged into the main repository.</div>
+        <div class="proj-footer">
+          <div class="proj-stack"><span class="proj-tech">Open Source</span><span class="proj-tech">C#</span><span class="proj-tech">PR Merged</span></div>
+          <a href="https://github.com/microsoft/chat-copilot/pull/1123" target="_blank" rel="noopener" class="proj-link">↗ PR #1123</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOVELS -->
+<section id="novels" style="border-top:1px solid var(--border);background:var(--section-alt);">
+  <div class="section-wrap">
+    <div class="section-tag">Novels</div>
+    <h2 class="section-title">Published Work</h2>
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:36px;max-width:640px;line-height:1.7;">A selection of my storytelling work, creative writing, and novel projects alongside my technical portfolio.</p>
+    <div class="projects-grid reveal">
+      <div class="proj-card">
+        <div class="proj-num">01 / Novel</div>
+        <div class="proj-title">Love Unveiled: A Symphony of Verses Celebrating the Enduring Embrace of Mother's Love</div>
+        <div class="proj-desc">"In the dance of words and emotions, 'Love Unveiled' by Shaharukh Mithagari beckons you to a symphony of love. Dive into the poetic tapestry that delicately weaves the seasons of a mother's affection, each verse an intricate thread in the fabric of life. This collection transcends mere poetry; it's an intimate exploration, an unveiling of love's raw and genuine beauty. Join us in this lyrical journey, where emotions flow freely, and the heart's cadence resonates through every line."</div>
+        <div class="proj-footer">
+          <div class="proj-stack"><span class="proj-tech">Fiction</span><span class="proj-tech">Tech Thriller</span></div>
+          <a href="https://amzn.in/d/0axg3Z4P" class="proj-link">↗ Read More</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-num">02 / Novel</div>
+        <div class="proj-title">Beyond the Miles: A Chance Encounter (Beyond the Miles Series) Kindle Edition</div>
+        <div class="proj-desc">Beyond the Miles: A Chance Encounter" is a heartwarming tale of love that knows no borders. In a world where distances often separate hearts, fate conspires to bring two souls together in the most unexpected way.</div>
+        <div class="proj-footer">
+          <div class="proj-stack"><span class="proj-tech">Fiction</span><span class="proj-tech">Suspense</span></div>
+          <a href="https://amzn.in/d/08SncVci" class="proj-link">↗ Read More</a>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-num">03 / Novel</div>
+        <div class="proj-title">Aadi Shetty: A Time Conspiracy Thriller</div>
+        <div class="proj-desc">Dr. Aadi Shetty lives a life of science, logic, and precision in Bengaluru—until a shocking phone call changes everything.
+Aria, a woman from his past, has been critically injured in a devastating accident. But as Aadi races to save her, strange events begin to unfold. Cryptic calls. Hidden experiments. Dangerous enemies. A sinister conspiracy linking science, power, and the manipulation of time.</div>
+        <div class="proj-footer">
+          <div class="proj-stack"><span class="proj-tech">Fiction</span><span class="proj-tech">Drama</span></div>
+          <a href="https://amzn.in/d/0h2GpGSH" class="proj-link">↗ Read More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RELOCATION MAP -->
+<section id="relocation">
+  <div class="section-wrap">
+    <div class="section-tag">Global Availability</div>
+    <h2 class="section-title">Open to Relocation 🌍</h2>
+    <div class="map-wrap reveal">
+      <div class="map-svg-wrap">
+        <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+          <rect width="900" height="500" fill="transparent"/>
+          <!-- Simple continent shapes -->
+          <!-- North America -->
+          <path d="M80,80 L200,70 L240,100 L260,150 L230,200 L200,220 L180,250 L160,240 L140,200 L100,180 L70,140 Z" fill="rgba(37,99,235,0.55)" stroke="rgba(6,182,212,0.8)" stroke-width="1.5" rx="4"/>
+          <!-- label -->
+          <text x="160" y="165" fill="#fff" font-size="11" font-family="DM Mono,monospace" text-anchor="middle" font-weight="500">USA / Canada</text>
+
+          <!-- South America -->
+          <path d="M170,270 L210,265 L225,290 L220,340 L200,380 L175,390 L155,360 L150,310 L160,280 Z" fill="rgba(99,130,190,0.25)" stroke="rgba(99,130,190,0.4)" stroke-width="1"/>
+
+          <!-- Europe -->
+          <path d="M380,60 L440,55 L460,75 L455,110 L430,125 L400,120 L378,100 Z" fill="rgba(37,99,235,0.55)" stroke="rgba(6,182,212,0.8)" stroke-width="1.5"/>
+          <text x="420" y="95" fill="#fff" font-size="11" font-family="DM Mono,monospace" text-anchor="middle" font-weight="500">Europe</text>
+
+          <!-- Africa -->
+          <path d="M390,140 L440,135 L460,160 L455,220 L435,250 L410,255 L388,230 L382,180 Z" fill="rgba(99,130,190,0.2)" stroke="rgba(99,130,190,0.35)" stroke-width="1"/>
+
+          <!-- Middle East -->
+          <path d="M460,100 L510,95 L525,115 L515,140 L490,148 L462,132 Z" fill="rgba(37,99,235,0.3)" stroke="rgba(6,182,212,0.5)" stroke-width="1"/>
+
+          <!-- South Asia (India highlighted) -->
+          <path d="M560,130 L600,125 L615,150 L610,185 L590,200 L568,188 L555,160 Z" fill="rgba(6,182,212,0.7)" stroke="#06b6d4" stroke-width="2"/>
+          <text x="585" y="165" fill="#fff" font-size="10" font-family="DM Mono,monospace" text-anchor="middle" font-weight="700">🏠 India</text>
+
+          <!-- East Asia -->
+          <path d="M650,80 L720,75 L740,100 L730,130 L700,140 L665,130 L645,108 Z" fill="rgba(99,130,190,0.2)" stroke="rgba(99,130,190,0.35)" stroke-width="1"/>
+
+          <!-- Australia -->
+          <path d="M680,310 L740,305 L760,330 L750,370 L720,380 L690,365 L675,340 Z" fill="rgba(99,130,190,0.18)" stroke="rgba(99,130,190,0.3)" stroke-width="1"/>
+
+          <!-- Gulf/UAE region -->
+          <path d="M500,135 L545,130 L555,150 L540,165 L505,160 Z" fill="rgba(37,99,235,0.4)" stroke="rgba(6,182,212,0.6)" stroke-width="1.2"/>
+          <text x="528" y="152" fill="#a5b4fc" font-size="9" font-family="DM Mono,monospace" text-anchor="middle">UAE/Gulf</text>
+
+          <!-- Connection lines from India to targets -->
+          <line x1="585" y1="155" x2="160" y2="160" stroke="rgba(6,182,212,0.25)" stroke-width="1" stroke-dasharray="6,4"/>
+          <line x1="585" y1="145" x2="420" y2="90" stroke="rgba(6,182,212,0.25)" stroke-width="1" stroke-dasharray="6,4"/>
+          <line x1="565" y1="150" x2="528" y2="148" stroke="rgba(6,182,212,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+
+          <!-- Animated dots on targets -->
+          <circle cx="160" cy="160" r="5" fill="#06b6d4" opacity="0.9"><animate attributeName="r" values="4;7;4" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0.4;0.9" dur="2s" repeatCount="indefinite"/></circle>
+          <circle cx="420" cy="90" r="5" fill="#06b6d4" opacity="0.9"><animate attributeName="r" values="4;7;4" dur="2.3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0.4;0.9" dur="2.3s" repeatCount="indefinite"/></circle>
+          <circle cx="528" cy="148" r="4" fill="#818cf8" opacity="0.8"><animate attributeName="r" values="3;6;3" dur="1.8s" repeatCount="indefinite"/></circle>
+        </svg>
+      </div>
+      <div class="reloc-regions">
+        <div class="region-card">
+          <div class="region-header"><span class="region-flag">🇺🇸</span><span class="region-name">United States</span><span class="region-badge">Top Choice</span></div>
+          <div class="region-roles">Google, Amazon, Meta, Apple, Cloudflare data centers across IA, NE, TX, AZ, GA, SC</div>
+        </div>
+        <div class="region-card">
+          <div class="region-header"><span class="region-flag">🇪🇺</span><span class="region-name">Europe</span><span class="region-badge">Open</span></div>
+          <div class="region-roles">Netherlands, Norway, Ireland, Germany — Google & Microsoft EU data centers</div>
+        </div>
+        <div class="region-card">
+          <div class="region-header"><span class="region-flag">🇦🇪</span><span class="region-name">UAE / Gulf</span><span class="region-badge">Open</span></div>
+          <div class="region-roles">Dubai, Abu Dhabi — rapidly growing hyperscale data center market</div>
+        </div>
+        <div class="region-card">
+          <div class="region-header"><span class="region-flag">🇸🇬</span><span class="region-name">Singapore / APAC</span><span class="region-badge">Open</span></div>
+          <div class="region-roles">Singapore, Japan — AWS, Google, Microsoft APAC infrastructure hubs</div>
+        </div>
+        <div class="region-card">
+          <div class="region-header"><span class="region-flag">🇮🇳</span><span class="region-name">India</span><span class="region-badge">Current</span></div>
+          <div class="region-roles">Mumbai / Navi Mumbai — currently based here, open to domestic DC roles too</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DREAM COMPANIES -->
+<section id="dream-companies" style="border-top:1px solid var(--border);background:var(--section-alt);">
+  <div class="section-wrap">
+    <div class="section-tag">Career Goals</div>
+    <h2 class="section-title">Dream Companies</h2>
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:36px;max-width:540px;line-height:1.7;">Aspiring to bring my data center &amp; infrastructure expertise to world-class technology organizations that operate at global scale.</p>
+    <div class="dream-grid reveal">
+      <div class="dream-card"><span class="star-badge">★ Applying</span><div class="dream-logo">🟦</div><div class="dream-name">Google</div><div class="dream-role">Data Center Technician</div></div>
+      <div class="dream-card"><div class="dream-logo">🟩</div><div class="dream-name">Amazon</div><div class="dream-role">AWS Data Center Ops</div></div>
+      <div class="dream-card"><div class="dream-logo">🟦</div><div class="dream-name">Facebook / Meta</div><div class="dream-role">Infrastructure Engineer</div></div>
+      <div class="dream-card"><div class="dream-logo">🪟</div><div class="dream-name">Microsoft</div><div class="dream-role">Azure DC Technician</div></div>
+      <div class="dream-card"><div class="dream-logo">🍎</div><div class="dream-name">Apple</div><div class="dream-role">Data Center Operations</div></div>
+      <div class="dream-card"><div class="dream-logo">☁️</div><div class="dream-name">Cloudflare</div><div class="dream-role">Network Infrastructure</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-wrap">
+    <div class="section-tag">Social Proof</div>
+    <h2 class="section-title">Recommendations</h2>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Shaharukh is one of the most reliable IT support professionals I've worked with. His ability to diagnose and resolve complex server hardware issues quickly is exceptional. He keeps systems running smoothly even under pressure.</p>
+        <div class="testi-author"><div class="testi-avatar">RK</div><div><div class="testi-name">Rahul K.</div><div class="testi-role">IT Manager · Precision Techserver</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">During his time with us, Shaharukh consistently went above and beyond — handling VPN setups, Linux administration, and remote troubleshooting with equal confidence. A true all-rounder in IT infrastructure.</p>
+        <div class="testi-author"><div class="testi-avatar">SM</div><div><div class="testi-name">Sunita M.</div><div class="testi-role">Operations Lead · Geekay Infotech</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">He set up our entire site's IT infrastructure from scratch — LAN, CCTV, servers — and kept it running flawlessly. Shaharukh is professional, technically sharp, and genuinely committed to uptime.</p>
+        <div class="testi-author"><div class="testi-avatar">AJ</div><div><div class="testi-name">Amit J.</div><div class="testi-role">Project Director · RDC Concrete Ltd</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-tag">Let's Connect</div>
+    <h2 class="section-title">Get In Touch</h2>
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="contact-intro">Open to Data Center Technician roles and IT infrastructure opportunities globally. Available for night shifts, weekend rotations, and shift-based schedules. Open to relocation worldwide.</p>
+        <div class="contact-links">
+          <a href="mailto:mithagaris@gmail.com" class="contact-link"><span>✉️</span> mithagaris@gmail.com</a>
+          <a href="https://linkedin.com" target="_blank" class="contact-link"><span>🔗</span> LinkedIn Profile</a>
+          <a href="https://github.com" target="_blank" class="contact-link"><span>🐙</span> GitHub Profile</a>
+          <a href="Shaharukh_Mithagari_Google_DCT.pdf" download class="contact-link"><span>📄</span> Download Resume (PDF)</a>
+        </div>
+        <div class="availability" style="margin-top:20px;">
+          <div class="avail-title"><span class="avail-dot"></span>Open to Opportunities</div>
+          <p class="avail-text">Currently seeking Data Center Technician and IT Infrastructure roles. Willing to relocate internationally.</p>
+          <div class="avail-tags">
+            <span class="avail-tag">Night Shifts ✓</span>
+            <span class="avail-tag">Weekends ✓</span>
+            <span class="avail-tag">Holidays ✓</span>
+            <span class="avail-tag">Relocation ✓</span>
+            <span class="avail-tag">50lb Lift ✓</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <input type="text" name="name" class="form-input" placeholder="John Smith" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Email</label>
+            <input type="email" name="email" class="form-input" placeholder="john@company.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Company (optional)</label>
+            <input type="text" name="company" class="form-input" placeholder="Google, Amazon...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea name="message" class="form-textarea" placeholder="Hi Shaharukh, we'd love to discuss a Data Center Technician role..." required></textarea>
+          </div>
+          <button type="submit" class="form-submit">↗ Send Message</button>
+          <div class="form-success" id="formSuccess">✅ Message sent! Shaharukh will get back to you soon.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-name">Shaharukh Shafi Mithagari</div>
+  <div class="footer-copy">© 2026 · Built with purpose</div>
+</footer>
+
+<!-- Back to Top -->
+<button class="back-top" id="backTop" title="Back to top">↑</button>
+
+<script>
+// ── CURSOR ──
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a,button,.skill-card,.cert-card,.proj-card,.dream-card,.achieve-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.classList.add('expand');ring.classList.add('expand');});
+  el.addEventListener('mouseleave',()=>{cursor.classList.remove('expand');ring.classList.remove('expand');});
+});
+
+// ── TYPING ANIMATION ──
+const roles=['Data Center Technician','System Administrator','IT Infrastructure Pro','Server Hardware Specialist','Network & Linux Engineer'];
+let ri=0,ci=0,deleting=false;
+const typedEl=document.getElementById('typedText');
+function type(){
+  const current=roles[ri];
+  if(!deleting){typedEl.textContent=current.slice(0,ci+1);ci++;if(ci===current.length){deleting=true;setTimeout(type,2000);return;}}
+  else{typedEl.textContent=current.slice(0,ci-1);ci--;if(ci===0){deleting=false;ri=(ri+1)%roles.length;}}
+  setTimeout(type,deleting?50:80);
+}
+setTimeout(type,1000);
+
+// ── THEME TOGGLE ──
+const themeBtn=document.getElementById('themeToggle');
+themeBtn.addEventListener('click',()=>{
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
+  themeBtn.textContent=isDark?'🌙':'☀️';
+});
+
+// ── HAMBURGER ──
+const ham=document.getElementById('hamburger'),mob=document.getElementById('mobileMenu');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mob.classList.toggle('open');});
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mob.classList.remove('open');}));
+
+// ── SMOOTH SCROLL + ACTIVE NAV ──
+const navLinks=document.querySelectorAll('.nav-links a');
+navLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    const href=link.getAttribute('href');
+    if(href.startsWith('#')){e.preventDefault();const t=document.querySelector(href);if(t){const top=t.getBoundingClientRect().top+window.scrollY-72;window.scrollTo({top,behavior:'smooth'});}}
+  });
+});
+const secObserver=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{if(en.isIntersecting){navLinks.forEach(a=>a.classList.remove('active'));const id=en.target.getAttribute('id');const a=document.querySelector(`.nav-links a[href="#${id}"]`);if(a)a.classList.add('active');}});
+},{rootMargin:'-30% 0px -60% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>secObserver.observe(s));
+
+// ── SCROLL REVEAL ──
+const revealObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');revealObs.unobserve(en.target);}});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(r=>revealObs.observe(r));
+
+// ── ANIMATED COUNTERS ──
+const counters=document.querySelectorAll('.stat-num[data-target]');
+const countObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const el=en.target,target=+el.dataset.target,suffix=el.dataset.suffix||'';
+      let current=0;
+      const step=Math.ceil(target/60);
+      const timer=setInterval(()=>{current=Math.min(current+step,target);el.innerHTML=current+'<span>'+suffix+'</span>';if(current>=target)clearInterval(timer);},30);
+      countObs.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+counters.forEach(c=>countObs.observe(c));
+
+// ── SKILL BARS ──
+const barObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      en.target.querySelectorAll('.skill-bar-fill').forEach((bar,i)=>{
+        setTimeout(()=>{bar.style.width=bar.dataset.w+'%';},i*120);
+      });
+      barObs.unobserve(en.target);
+    }
+  });
+},{threshold:0.2});
+const barSection=document.getElementById('skillBars');
+if(barSection)barObs.observe(barSection);
+
+// ── BACK TO TOP ──
+const backTop=document.getElementById('backTop');
+window.addEventListener('scroll',()=>{backTop.classList.toggle('visible',window.scrollY>400);});
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+// ── CONTACT FORM (Formspree) ──
+const form=document.getElementById('contactForm');
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=form.querySelector('.form-submit');
+  btn.textContent='Sending...';btn.disabled=true;
+  try{
+    const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+    if(res.ok){document.getElementById('formSuccess').style.display='block';form.reset();}
+    else{btn.textContent='Error – Try Email Instead';}
+  }catch{btn.textContent='Error – Try Email Instead';}
+  btn.disabled=false;btn.textContent='↗ Send Message';
+});
+</script>
+</body>
+</html>
